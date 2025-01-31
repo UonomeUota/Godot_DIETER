@@ -1,0 +1,89 @@
+[gd_scene load_steps=11 format=3 uid="uid://bkperl4vygbjo"]
+
+[ext_resource type="Texture2D" uid="uid://b44n8p2tchmbi" path="res://my_asset/png/start.png" id="1_eavdy"]
+[ext_resource type="Script" path="res://Scripts/start_screen.gd" id="1_qv3xi"]
+[ext_resource type="Texture2D" uid="uid://cd67fhjelh4et" path="res://my_asset/png/logo.png" id="2_1xkvu"]
+[ext_resource type="FontFile" uid="uid://bkctoubxjoxt5" path="res://my_asset/fonts/PixelMplus12-Bold.ttf" id="3_6cos6"]
+[ext_resource type="Script" path="res://Scripts/logo.gd" id="3_vdqg8"]
+[ext_resource type="Script" path="res://Scripts/press_text.gd" id="6_jh0eg"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g45ht"]
+bounce = 0.3
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tup86"]
+size = Vector2(296.25, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xlnwe"]
+size = Vector2(409.5, 20)
+
+[sub_resource type="LabelSettings" id="LabelSettings_21p0f"]
+font = ExtResource("3_6cos6")
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="StartScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qv3xi")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -120.0
+offset_right = 160.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_eavdy")
+
+[node name="Logo" type="RigidBody2D" parent="."]
+position = Vector2(0, -150)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_g45ht")
+gravity_scale = 1.5
+script = ExtResource("3_vdqg8")
+
+[node name="Sprite2D" type="Sprite2D" parent="Logo"]
+texture = ExtResource("2_1xkvu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Logo"]
+position = Vector2(0, 20)
+shape = SubResource("RectangleShape2D_tup86")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(0, 130)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_xlnwe")
+
+[node name="PressText" type="Label" parent="."]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -27.5
+offset_right = 110.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(110, 27)
+text = "スペースを押してプレイ"
+label_settings = SubResource("LabelSettings_21p0f")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_jh0eg")
