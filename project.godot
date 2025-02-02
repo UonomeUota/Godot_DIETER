@@ -13,6 +13,7 @@ config_version=5
 config/name="DIETTER"
 run/main_scene="res://start.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [display]
