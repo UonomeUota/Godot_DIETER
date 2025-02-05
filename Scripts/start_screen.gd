@@ -33,4 +33,4 @@ func animate_text_loop():
 # スペースキーが押されたら次のシーンへ
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
-		get_tree().change_scene_to_file("res://game.tscn")  # 次のシーンに遷移
+		get_tree().change_scene_to_file("res://Level_Base/game.tscn")  # 次のシーンに遷移

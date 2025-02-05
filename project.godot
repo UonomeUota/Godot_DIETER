@@ -53,6 +53,12 @@ walk_backward={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="object"
+2d_physics/layer_2="player_hit"
+2d_physics/layer_3="enemy_attack"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

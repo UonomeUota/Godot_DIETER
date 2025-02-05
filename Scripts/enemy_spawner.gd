@@ -1,36 +1,36 @@
 extends Node2D
 
-@export var enemy_scenes: Array[PackedScene]  # スポーンする敵の種類
-@export var spawn_margin: int = 50  # 画面外から敵をスポーンさせる範囲
-
-@onready var timer = $Timer  # Timer ノード
+@export var enemy_scene: PackedScene  # エディタでEnemy1シーンを設定するための変数
+@export var spawn_interval: float = 3.0  # スポーン間隔（秒）
+var timer: Timer
 
 func _ready():
-	randomize()  # ランダムシードを初期化（これを呼ぶことでrandf_rangeなどがランダムになる）
-	timer.start()  # タイマーをスタート
-	add_to_group("enemy")  # 敵を "enemy" グループに追加
-
-	timer.timeout.connect(_on_timer_timeout)
+	timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = spawn_interval
+	timer.connect("timeout", _on_timer_timeout)
+	timer.start()
 
 func _on_timer_timeout():
-	if enemy_scenes.is_empty():
-		return
-
-	# 画面の四辺（上・下・左・右）のどこからスポーンするかを決める
-	var viewport_rect = get_viewport_rect()
-	var side = randi() % 4  # 0: 上, 1: 下, 2: 左, 3: 右
+	var enemy = enemy_scene.instantiate()
+	# ランダムな位置にスポーン（画面外から）
+	var viewport_size = get_viewport_rect().size
 	var spawn_position = Vector2.ZERO
-
-	match side:
-		0: spawn_position = Vector2(randf_range(0, viewport_rect.size.x), -spawn_margin)  # 上
-		1: spawn_position = Vector2(randf_range(0, viewport_rect.size.x), viewport_rect.size.y + spawn_margin)  # 下
-		2: spawn_position = Vector2(-spawn_margin, randf_range(0, viewport_rect.size.y))  # 左
-		3: spawn_position = Vector2(viewport_rect.size.x + spawn_margin, randf_range(0, viewport_rect.size.y))  # 右
-
-	# ランダムな敵を選んでインスタンス化
-	var enemy_scene = enemy_scenes[randi() % enemy_scenes.size()]  # ランダムに選択
-	var enemy_instance = enemy_scene.instantiate()
-
-	# 位置をセットしてシーンに追加
-	enemy_instance.global_position = spawn_position
-	get_parent().add_child(enemy_instance)  # 親（ゲームシーン）に追加
+	
+	# ランダムに画面外の位置を決定
+	match randi() % 4:
+		0:  # 上
+			spawn_position.x = randf_range(0, viewport_size.x)
+			spawn_position.y = -50
+		1:  # 右
+			spawn_position.x = viewport_size.x + 50
+			spawn_position.y = randf_range(0, viewport_size.y)
+		2:  # 下
+			spawn_position.x = randf_range(0, viewport_size.x)
+			spawn_position.y = viewport_size.y + 50
+		3:  # 左
+			spawn_position.x = -50
+			spawn_position.y = randf_range(0, viewport_size.y)
+	
+	enemy.global_position = spawn_position
+	add_child(enemy) 
